@@ -1,0 +1,276 @@
+111111111
+Activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto"
+   xmlns:tools="http://schemas.android.com/tools"
+   android:id="@+id/main"
+   android:layout_width="match_parent"
+   android:layout_height="match_parent"
+   tools:context=".MainActivity">
+
+
+   <Button
+       android:id="@+id/button"
+       android:layout_width="218dp"
+       android:layout_height="52dp"
+       android:fontFamily="casual"
+       android:text="@string/button"
+       android:textSize="16sp"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.382"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.361" />
+
+
+   <TextView
+       android:id="@+id/textView2"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="@string/text1"
+       tools:layout_editor_absoluteX="68dp"
+       tools:layout_editor_absoluteY="46dp" />
+
+
+   <EditText
+       android:id="@+id/editTextText"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:ems="10"
+       android:inputType="text"
+       android:text=""
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.368"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.143" />
+
+
+   <TextView
+       android:id="@+id/textView3"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="@string/text3"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.31"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.225" />
+
+
+   <TextView
+       android:id="@+id/textView4"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="@string/text2"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.296"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.113" />
+
+
+   <EditText
+       android:id="@+id/editTextText2"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:ems="10"
+       android:inputType="text"
+       android:text=""
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.368"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.26" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+ String.xml
+
+
+<resources>
+   <string name="app_name">temp</string>
+   <string name="button">Convert Temperature</string>
+   <string name="text1">My Temperature Converter</string>
+   <string name="text2">Enter Celsius Temp Below</string>
+   <string name="text3">Enter Fahrenheit Temp Below</string>
+
+
+</resources>
+
+
+MainActivity.kt
+package com.example.temp
+
+
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+
+
+class MainActivity : AppCompatActivity() {
+   override fun onCreate(savedInstanceState: Bundle?) {
+       super.onCreate(savedInstanceState)
+       enableEdgeToEdge()
+       setContentView(R.layout.activity_main)
+       val button1 = findViewById<Button>(R.id.button)
+       val tv1 = findViewById<EditText>(R.id.editTextText)
+       val tv2 = findViewById<EditText>(R.id.editTextText2)
+
+
+       button1.setOnClickListener {
+           val c = tv1.text.toString()
+           val f = tv2.text.toString()
+           if (c.isNotEmpty()) {
+               val celsius = c.toDouble()
+               val fahrenheit = (celsius * 9 / 5) + 32
+               Toast.makeText(this, "Fahrenheit: %.2f".format(fahrenheit), Toast.LENGTH_SHORT).show()
+           } else if (f.isNotEmpty()) {
+               val fahrenheit = f.toDouble()
+               val celsius = (fahrenheit - 32) * 5 / 9
+               Toast.makeText(this, "Celsius: %.2f".format(celsius), Toast.LENGTH_SHORT).show()
+           } else {
+               Toast.makeText(this, "Please enter a value", Toast.LENGTH_SHORT).show()
+           }
+       }
+
+
+       ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+           val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+           v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+           insets
+       }
+   }
+}
+
+
+
+222222222222
+activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto"
+   xmlns:tools="http://schemas.android.com/tools"
+   android:id="@+id/main"
+   android:layout_width="match_parent"
+   android:layout_height="match_parent"
+   tools:context=".MainActivity">
+
+
+
+
+   <TextView
+       android:id="@+id/textView3"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="I am so Hungry!"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.461"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.584" />
+
+
+
+
+   <Button
+       android:id="@+id/button2"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="Eat Burger"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.481"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.765" />
+
+
+
+
+   <ImageView
+       android:id="@+id/imageView3"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.453"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.362"
+       app:srcCompat="@drawable/angry" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+mainActivity.kt
+package com.example.exercise2
+
+
+
+
+import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+
+
+
+
+class MainActivity : AppCompatActivity() {
+   override fun onCreate(savedInstanceState: Bundle?) {
+       super.onCreate(savedInstanceState)
+       enableEdgeToEdge()
+       setContentView(R.layout.activity_main)
+       val button1=findViewById<Button>(R.id.button2) as Button
+       val tv1= findViewById<TextView>(R.id.textView3) as TextView
+       button1.setOnClickListener(){
+           Toast.makeText(this,"I am so full", Toast.LENGTH_SHORT).show()
+           tv1.text=getString(R.string.Name)
+           val imageView = findViewById<ImageView>(R.id.imageView3)
+           imageView.setImageResource(R.drawable.full)
+           button1.text=getString(R.string.Name1)
+
+
+
+
+       }
+       ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+           val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+           v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+           insets
+       }
+   }
+}
+
+strings.xml
+<resources>
+   <string name="app_name">Exercise2</string>
+   <string name="button">Eat Burger</string>
+   <string name="Name">I am full</string>
+   <string name="Name1">Done</string>
+   <string name="full">"full.png"</string>
+</resources>
