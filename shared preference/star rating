@@ -1,0 +1,205 @@
+activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto"
+   xmlns:tools="http://schemas.android.com/tools"
+   android:id="@+id/main"
+   android:layout_width="match_parent"
+   android:layout_height="match_parent"
+   android:backgroundTint="#D06060"
+   android:foregroundTint="#C85151"
+   tools:context=".MainActivity">
+
+
+   <Button
+       android:id="@+id/button"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:background="#2C2D2E"
+       android:backgroundTint="#E91E1E"
+       android:text="SEND FEEDBACK"
+       android:textColorLink="#6C24E7"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.607" />
+
+
+   <EditText
+       android:id="@+id/editTextTextMultiLine"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:ems="10"
+       android:gravity="start|top"
+       android:inputType="textMultiLine"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.497"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.486" />
+
+
+   <RatingBar
+       android:id="@+id/ratingBar"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:numStars="5"
+       android:stepSize="1.0"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.391"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.176" />
+
+
+   <TextView
+       android:id="@+id/ratingMessage"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:fontFamily="cursive"
+       android:text=""
+       android:textSize="16sp"
+       android:textStyle="bold"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.452"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@+id/ratingBar"
+       app:layout_constraintVertical_bias="0.063" />
+
+
+   <TextView
+       android:id="@+id/textView2"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:fontFamily="casual"
+       android:text="WE HOPE THAT YOU ENJOYED YOUR MEAL WITH US"
+       android:textAlignment="center"
+       android:textSize="16sp"
+       android:textStyle="bold"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.093" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+MainActivity.kt
+.package com.example.rating_app
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.RatingBar
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import kotlin.math.roundToInt
+
+
+class MainActivity : AppCompatActivity() {
+   override fun onCreate(savedInstanceState: Bundle?) {
+       super.onCreate(savedInstanceState)
+       setContentView(R.layout.activity_main)
+
+
+       val b1 = findViewById<Button>(R.id.button)
+       val e1 = findViewById<EditText>(R.id.editTextTextMultiLine)
+       val ratingBar: RatingBar = findViewById(R.id.ratingBar)
+       val ratingMessage: TextView = findViewById(R.id.ratingMessage)
+
+
+       ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+           val wholeNumberRating = rating.roundToInt() // Ensure only whole number ratings
+           val message = when (wholeNumberRating) {
+               5 -> "Awesome. I love it"
+               4 -> "Good. Enjoyed it"
+               3 -> "Satisfied."
+               2 -> "Not good. Need improvement"
+               1 -> "Disappointed. Very poor"
+               else -> ""
+           }
+
+
+           // Display the message below the star rating
+           ratingMessage.text = message
+           ratingBar.rating = wholeNumberRating.toFloat()        }
+
+
+       b1.setOnClickListener {
+           val enteredMessage = e1.text.toString()
+
+
+           if (enteredMessage.isEmpty()) {
+               Toast.makeText(this, "Message is required", Toast.LENGTH_SHORT).show()
+           } else if (enteredMessage.length > 100) {
+               Toast.makeText(this, "Message must be 100 characters or less", Toast.LENGTH_SHORT).show()
+           } else {
+               val intent = Intent(this, MainActivity2::class.java)
+               intent.putExtra("MESSAGE", enteredMessage)
+               startActivity(intent)
+           }
+       }
+
+
+       ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+           val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+           v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+           insets
+       }
+   }
+}
+
+
+activity_main2.xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto"
+   xmlns:tools="http://schemas.android.com/tools"
+   android:layout_width="match_parent"
+   android:layout_height="match_parent"
+   tools:context=".MainActivity2">
+
+
+   <TextView
+       android:id="@+id/displayMessage"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:textSize="16sp"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.5" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+MainActivity.kt
+package com.example.rating_app
+
+
+import android.os.Bundle
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+
+
+class MainActivity2 : AppCompatActivity() {
+   override fun onCreate(savedInstanceState: Bundle?) {
+       super.onCreate(savedInstanceState)
+       setContentView(R.layout.activity_main2)
+
+
+       val displayMessage = findViewById<TextView>(R.id.displayMessage)
+       val message = intent.getStringExtra("MESSAGE")
+       displayMessage.text = message
+   }
+}
+
