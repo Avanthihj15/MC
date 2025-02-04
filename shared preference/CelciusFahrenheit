@@ -1,0 +1,262 @@
+activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto"
+   xmlns:tools="http://schemas.android.com/tools"
+   android:id="@+id/main"
+   android:layout_width="match_parent"
+   android:layout_height="match_parent"
+   tools:context=".MainActivity">
+
+
+   <TextView
+       android:id="@+id/textViewFirstName"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="First Name:"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintHorizontal_bias="0.1"
+       app:layout_constraintVertical_bias="0.1" />
+
+
+   <EditText
+       android:id="@+id/firstName"
+       android:layout_width="0dp"
+       android:layout_height="wrap_content"
+       android:hint="Enter your first name"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintStart_toEndOf="@+id/textViewFirstName"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.9"
+       app:layout_constraintVertical_bias="0.1" />
+
+
+   <TextView
+       android:id="@+id/textViewLastName"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="Last Name:"
+       app:layout_constraintTop_toBottomOf="@+id/firstName"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintHorizontal_bias="0.1"
+       app:layout_constraintVertical_bias="0.2" />
+
+
+   <EditText
+       android:id="@+id/lastName"
+       android:layout_width="0dp"
+       android:layout_height="wrap_content"
+       android:hint="Enter your last name"
+       app:layout_constraintTop_toBottomOf="@+id/firstName"
+       app:layout_constraintStart_toEndOf="@+id/textViewLastName"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.9"
+       app:layout_constraintVertical_bias="0.2" />
+
+
+   <TextView
+       android:id="@+id/textViewVisitType"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="Visit Type:"
+       app:layout_constraintTop_toBottomOf="@+id/lastName"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintHorizontal_bias="0.1"
+       app:layout_constraintVertical_bias="0.3" />
+
+
+   <RadioGroup
+       android:id="@+id/radioGroupVisitType"
+       android:layout_width="0dp"
+       android:layout_height="wrap_content"
+       app:layout_constraintTop_toBottomOf="@+id/textViewVisitType"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.9"
+       app:layout_constraintVertical_bias="0.3">
+
+
+       <RadioButton
+           android:id="@+id/radioButtonBusiness"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Business" />
+
+
+       <RadioButton
+           android:id="@+id/radioButtonSocial"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Social" />
+   </RadioGroup>
+
+
+   <TextView
+       android:id="@+id/textViewCountry"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="Select Country:"
+       app:layout_constraintTop_toBottomOf="@+id/radioGroupVisitType"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintHorizontal_bias="0.1"
+       app:layout_constraintVertical_bias="0.4" />
+
+
+   <Spinner
+       android:id="@+id/spinnerCountry"
+       android:layout_width="0dp"
+       android:layout_height="wrap_content"
+       app:layout_constraintTop_toBottomOf="@+id/radioGroupVisitType"
+       app:layout_constraintStart_toEndOf="@+id/textViewCountry"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.9"
+       app:layout_constraintVertical_bias="0.4" />
+
+
+   <Button
+       android:id="@+id/continueButton"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="Continue"
+       app:layout_constraintTop_toBottomOf="@+id/spinnerCountry"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.5"
+       app:layout_constraintVertical_bias="0.5" />
+
+
+   <Button
+       android:id="@+id/cancelButton"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="Cancel"
+       app:layout_constraintTop_toBottomOf="@+id/continueButton"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.5"
+       app:layout_constraintVertical_bias="0.6" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+MainActivity.kt
+package com.example.visit
+
+
+import android.content.Intent
+import android.os.Bundle
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import java.util.regex.Pattern
+
+
+class MainActivity : AppCompatActivity() {
+   override fun onCreate(savedInstanceState: Bundle?) {
+       super.onCreate(savedInstanceState)
+       setContentView(R.layout.activity_main)
+
+
+       val firstName = findViewById<EditText>(R.id.firstName)
+       val lastName = findViewById<EditText>(R.id.lastName)
+       val radioGroupVisitType = 
+findViewById<RadioGroup>(R.id.radioGroupVisitType)
+       val spinnerCountry = findViewById<Spinner>(R.id.spinnerCountry)
+       val continueButton = findViewById<Button>(R.id.continueButton)
+
+
+       // Populate Spinner with Country List
+       val countries = arrayOf("India", "USA", "UK", "Canada", "Australia")
+       val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, countries)
+       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+       spinnerCountry.adapter = adapter
+
+
+       continueButton.setOnClickListener {
+           val fName = firstName.text.toString()
+           val lName = lastName.text.toString()
+           val selectedRadioButtonId = radioGroupVisitType.checkedRadioButtonId
+
+
+           if (selectedRadioButtonId == -1) {
+               Toast.makeText(this, "Please select a visit type", Toast.LENGTH_SHORT).show()
+               return@setOnClickListener
+           }
+
+
+           val visitType = findViewById<RadioButton>(selectedRadioButtonId).text.toString()
+           val country = spinnerCountry.selectedItem.toString()
+
+
+           if (fName.isEmpty() || lName.isEmpty() || visitType.isEmpty() || 
+country.isEmpty()) {
+               Toast.makeText(this, "All fields are required", 
+Toast.LENGTH_SHORT).show()
+           } else if (!Pattern.matches("[a-zA-Z]+", fName) || 
+!Pattern.matches("[a-zA-Z]+", lName)) {
+               Toast.makeText(this, "First name and Last name should only contain alphabets", Toast.LENGTH_SHORT).show()
+           } else {
+               val intent = Intent(this, MainActivity2::class.java)
+               intent.putExtra("FIRST_NAME", fName)
+               intent.putExtra("LAST_NAME", lName)
+               intent.putExtra("VISIT_TYPE", visitType)
+               intent.putExtra("COUNTRY", country)
+               startActivity(intent)
+           }
+       }
+   }
+}
+
+activity_main2.xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto"
+   xmlns:tools="http://schemas.android.com/tools"
+   android:layout_width="match_parent"
+   android:layout_height="match_parent"
+   tools:context=".MainActivity2">
+
+
+   <TextView
+       android:id="@+id/displayMessage"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:fontFamily="cursive"
+       android:lineSpacingExtra="8sp"
+       android:textAlignment="center"
+       android:textSize="20sp"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.5" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+MainActivity2.kt
+package com.example.visit
+import android.os.Bundle
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+
+
+class MainActivity2 : AppCompatActivity() {
+   override fun onCreate(savedInstanceState: Bundle?) {
+       super.onCreate(savedInstanceState)
+       setContentView(R.layout.activity_main2)
+
+
+       val firstName = intent.getStringExtra("FIRST_NAME")
+       val lastName = intent.getStringExtra("LAST_NAME")
+       val visitType = intent.getStringExtra("VISIT_TYPE")
+       val country = intent.getStringExtra("COUNTRY")
+       val message = intent.getStringExtra("MESSAGE")
+
+
+       val displayMessage = findViewById<TextView>(R.id.displayMessage)
+       displayMessage.text = "First Name: $firstName\nLast Name: $lastName\nVisit Type: $visitType\nCountry: $country"
+   }
+}
