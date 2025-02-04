@@ -1,0 +1,423 @@
+activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto"
+   xmlns:tools="http://schemas.android.com/tools"
+   android:id="@+id/main"
+   android:layout_width="match_parent"
+   android:layout_height="match_parent"
+   tools:context=".MainActivity">
+
+
+   <EditText
+       android:id="@+id/first_name"
+       android:layout_width="229dp"
+       android:layout_height="53dp"
+       android:layout_marginTop="44dp"
+       android:fontFamily="@font/akaya_telivigala"
+       android:hint="First Name"
+       android:imeOptions="actionNext"
+       android:textAlignment="center"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.181"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent" />
+
+
+   <EditText
+       android:id="@+id/last_name"
+       android:layout_width="228dp"
+       android:layout_height="65dp"
+       android:layout_marginTop="20dp"
+       android:fontFamily="@font/akaya_telivigala"
+       android:hint="Last Name"
+       android:imeOptions="actionNext"
+       android:textAlignment="center"
+       app:layout_constraintTop_toBottomOf="@+id/first_name"
+       tools:layout_editor_absoluteX="34dp" />
+
+
+   <EditText
+       android:id="@+id/phone_number"
+       android:layout_width="232dp"
+       android:layout_height="49dp"
+       android:layout_marginTop="12dp"
+       android:fontFamily="sans-serif"
+       android:hint="Phone Number"
+       android:inputType="phone"
+       android:textAlignment="center"
+       app:layout_constraintTop_toBottomOf="@+id/last_name"
+       tools:layout_editor_absoluteX="33dp" />
+
+
+   <EditText
+       android:id="@+id/email_address"
+       android:layout_width="230dp"
+       android:layout_height="64dp"
+       android:layout_marginTop="20dp"
+       android:fontFamily="@font/akaya_telivigala"
+       android:hint="Email Address"
+       android:inputType="textEmailAddress"
+       android:textAlignment="center"
+       app:layout_constraintTop_toBottomOf="@+id/phone_number"
+       tools:layout_editor_absoluteX="35dp" />
+
+
+   <EditText
+       android:id="@+id/birthday"
+       android:layout_width="237dp"
+       android:layout_height="55dp"
+       android:layout_marginTop="24dp"
+       android:fontFamily="sans-serif"
+       android:hint="Birthday (YYYY-MM-DD)"
+       android:textAlignment="center"
+       app:layout_constraintTop_toBottomOf="@+id/email_address"
+       tools:layout_editor_absoluteX="35dp" />
+
+
+   <Spinner
+       android:id="@+id/gender_spinner"
+       android:layout_width="138dp"
+       android:layout_height="29dp"
+       android:layout_marginStart="32dp"
+       android:layout_marginTop="8dp"
+       android:entries="@array/gender_options"
+       android:fontFamily="@font/akaya_telivigala"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@+id/birthday" />
+
+
+   <EditText
+       android:id="@+id/address"
+       android:layout_width="361dp"
+       android:layout_height="73dp"
+       android:layout_marginTop="12dp"
+       android:fontFamily="@font/akaya_telivigala"
+       android:hint="Address"
+       android:textAlignment="center"
+       app:layout_constraintTop_toBottomOf="@+id/gender_spinner"
+       tools:layout_editor_absoluteX="25dp" />
+
+
+   <CheckBox
+       android:id="@+id/terms_checkbox"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_marginTop="20dp"
+       android:fontFamily="@font/akaya_telivigala"
+       android:text="I accept the terms and conditions."
+       app:layout_constraintTop_toBottomOf="@+id/address"
+       tools:layout_editor_absoluteX="88dp" />
+
+
+   <Button
+       android:id="@+id/save_button"
+       android:layout_width="283dp"
+       android:layout_height="53dp"
+       android:layout_marginTop="4dp"
+       android:fontFamily="@font/akaya_telivigala"
+       android:text="Save"
+       app:layout_constraintTop_toBottomOf="@+id/terms_checkbox"
+       tools:layout_editor_absoluteX="64dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+MainActivity.kt
+package com.example.exercise6
+
+
+import android.app.Activity
+import android.content.Intent
+import android.content.SharedPreferences
+import android.os.Bundle
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+
+
+class MainActivity : AppCompatActivity() {
+   lateinit var sharedPreferences: SharedPreferences
+
+
+   override fun onCreate(savedInstanceState: Bundle?) {
+       super.onCreate(savedInstanceState)
+       setContentView(R.layout.activity_main)
+
+
+       val editTextFirstName = findViewById<EditText>(R.id.first_name)
+       val editTextLastName = findViewById<EditText>(R.id.last_name)
+       val editTextPhoneNumber = findViewById<EditText>(R.id.phone_number)
+       val editTextEmailAddress = findViewById<EditText>(R.id.email_address)
+       val editTextBirthday = findViewById<EditText>(R.id.birthday)
+       val spinnerGender = findViewById<Spinner>(R.id.gender_spinner)
+       val editTextAddress = findViewById<EditText>(R.id.address)
+       val checkBoxTerms = findViewById<CheckBox>(R.id.terms_checkbox)
+       val btnSave = findViewById<Button>(R.id.save_button)
+
+
+       sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+
+
+       // Load saved data if available
+       editTextFirstName.setText(sharedPreferences.getString("firstName", ""))
+       editTextLastName.setText(sharedPreferences.getString("lastName", ""))
+       editTextPhoneNumber.setText(sharedPreferences.getString("phoneNumber", ""))
+       editTextEmailAddress.setText(sharedPreferences.getString("emailAddress", ""))
+       editTextBirthday.setText(sharedPreferences.getString("birthday", ""))
+       editTextAddress.setText(sharedPreferences.getString("address", ""))
+       checkBoxTerms.isChecked = sharedPreferences.getBoolean("isTermsAccepted", false)
+
+
+       btnSave.setOnClickListener {
+           val firstName = editTextFirstName.text.toString()
+           val lastName = editTextLastName.text.toString()
+           val phoneNumber = editTextPhoneNumber.text.toString()
+           val emailAddress = editTextEmailAddress.text.toString()
+           val birthday = editTextBirthday.text.toString()
+           val gender = spinnerGender.selectedItem.toString()
+           val address = editTextAddress.text.toString()
+           val isTermsAccepted = checkBoxTerms.isChecked
+
+
+           if (firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty() || emailAddress.isEmpty() || birthday.isEmpty()) {
+               Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+               return@setOnClickListener
+           }
+
+
+           sharedPreferences.edit().apply {
+               putString("firstName", firstName)
+               putString("lastName", lastName)
+               putString("phoneNumber", phoneNumber)
+               putString("emailAddress", emailAddress)
+               putString("birthday", birthday)
+               putString("gender", gender)
+               putString("address", address)
+               putBoolean("isTermsAccepted", isTermsAccepted)
+               apply()
+           }
+
+
+           val intent = Intent(this, MainActivity2::class.java).apply {
+               putExtra("firstName", firstName)
+               putExtra("lastName", lastName)
+               putExtra("phoneNumber", phoneNumber)
+               putExtra("emailAddress", emailAddress)
+               putExtra("birthday", birthday)
+               putExtra("gender", gender)
+               putExtra("address", address)
+               putExtra("isTermsAccepted", isTermsAccepted)
+           }
+           startActivityForResult(intent, 1) // Start MainActivity2 for result with code 1
+       }
+   }
+
+
+   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+       super.onActivityResult(requestCode, resultCode, data)
+       if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+           data?.let {
+               val firstName = it.getStringExtra("firstName")
+               val lastName = it.getStringExtra("lastName")
+               val phoneNumber = it.getStringExtra("phoneNumber")
+               val emailAddress = it.getStringExtra("emailAddress")
+               val birthday = it.getStringExtra("birthday")
+               val gender = it.getStringExtra("gender")
+               val address = it.getStringExtra("address")
+               val isTermsAccepted = it.getBooleanExtra("isTermsAccepted", false)
+
+
+               // Setting the received data to EditText fields
+               findViewById<EditText>(R.id.first_name).setText(firstName)
+               findViewById<EditText>(R.id.last_name).setText(lastName)
+               findViewById<EditText>(R.id.phone_number).setText(phoneNumber)
+               findViewById<EditText>(R.id.email_address).setText(emailAddress)
+               findViewById<EditText>(R.id.birthday).setText(birthday)
+
+
+               // Correctly set spinner value based on gender string comparison
+               val genderArray = resources.getStringArray(R.array.gender_options)
+               val genderPosition = genderArray.indexOfFirst { it.equals(gender, ignoreCase = true) }
+               if (genderPosition >= 0) {
+                   findViewById<Spinner>(R.id.gender_spinner).setSelection(genderPosition)
+               }
+
+
+               findViewById<EditText>(R.id.address).setText(address)
+               findViewById<CheckBox>(R.id.terms_checkbox).isChecked = isTermsAccepted
+           }
+       }
+   }
+}
+
+
+activity_main2.xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto"
+   xmlns:tools="http://schemas.android.com/tools"
+   android:id="@+id/main"
+   android:layout_width="match_parent"
+   android:layout_height="match_parent"
+   tools:context=".MainActivity2">
+
+
+   <Button
+       android:id="@+id/btnConfirm"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:fontFamily="@font/akaya_telivigala"
+       android:text="Confirm"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.794"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.475" />
+
+
+   <Button
+       android:id="@+id/btnEdit"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_margin="16dp"
+       android:fontFamily="@font/akaya_telivigala"
+       android:text="Edit"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.198"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.474" />
+
+
+   <TextView
+       android:id="@+id/textView"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:fontFamily="@font/akaya_telivigala"
+       android:text="Do you want to..."
+       android:textSize="20sp"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.498"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.367" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+MainActivity2.kt
+package com.example.exercise6
+
+
+import android.app.Activity
+import android.content.Intent
+import android.os.Bundle
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+
+
+class MainActivity2 : AppCompatActivity() {
+
+
+   override fun onCreate(savedInstanceState: Bundle?) {
+       super.onCreate(savedInstanceState)
+       setContentView(R.layout.activity_main2)
+
+
+       val btnConfirm = findViewById<Button>(R.id.btnConfirm)
+       val btnEdit = findViewById<Button>(R.id.btnEdit)
+
+
+       val firstName = intent.getStringExtra("firstName")
+       val lastName = intent.getStringExtra("lastName")
+       val phoneNumber = intent.getStringExtra("phoneNumber")
+       val emailAddress = intent.getStringExtra("emailAddress")
+       val birthday = intent.getStringExtra("birthday")
+       val gender = intent.getStringExtra("gender")
+       val address = intent.getStringExtra("address")
+       val isTermsAccepted = intent.getBooleanExtra("isTermsAccepted", false)
+
+
+
+
+       btnConfirm.setOnClickListener {
+           val intent = Intent(this, MainActivity3::class.java).apply {
+               putExtra("firstName", firstName)
+           }
+           startActivity(intent)
+       }
+
+
+       btnEdit.setOnClickListener {
+           val resultIntent = Intent().apply {
+               putExtra("firstName", firstName)
+               putExtra("lastName", lastName)
+               putExtra("phoneNumber", phoneNumber)
+               putExtra("emailAddress", emailAddress)
+               putExtra("birthday", birthday)
+               putExtra("gender", gender)
+               putExtra("address", address)
+               putExtra("isTermsAccepted", isTermsAccepted)
+           }
+           setResult(Activity.RESULT_OK, resultIntent)
+           finish()
+       }
+   }
+}
+
+
+activity_main3.xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto"
+   xmlns:tools="http://schemas.android.com/tools"
+   android:id="@+id/main"
+   android:layout_width="match_parent"
+   android:layout_height="match_parent"
+   tools:context=".MainActivity3">
+
+
+   <TextView
+       android:id="@+id/textViewWelcomeMessage"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:fontFamily="@font/akaya_telivigala"
+       android:text="Hi, You are successfully registered"
+       android:textSize="20sp"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.487" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+MainActivity3.kt
+package com.example.exercise6
+
+
+import android.os.Bundle
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+
+
+class MainActivity3 : AppCompatActivity() {
+
+
+   override fun onCreate(savedInstanceState: Bundle?) {
+       super.onCreate(savedInstanceState)
+       setContentView(R.layout.activity_main3)
+
+
+       val textViewWelcomeMessage = findViewById<TextView>(R.id.textViewWelcomeMessage)
+       val firstName = intent.getStringExtra("firstName")
+
+
+       textViewWelcomeMessage.text = "Hi $firstName, You are successfully registered"
+   }
+}
