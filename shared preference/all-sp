@@ -1,0 +1,288 @@
+USING SHARED PREFERENCE
+MainActivity.kt
+package com.example.form
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+class MainActivity : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+enableEdgeToEdge()
+setContentView(R.layout.activity_main)
+val firstNameEditText: EditText = findViewById(R.id.editTextText)
+val lastNameEditText: EditText = findViewById(R.id.editTextText2)
+val numberEditText: EditText = findViewById(R.id.editTextText3)
+val emailEditText: EditText = findViewById(R.id.editTextText4)
+val radioGroup: RadioGroup = findViewById(R.id.radioGroup)
+val saveButton: Button = findViewById(R.id.button)
+saveButton.setOnClickListener {
+val firstName = firstNameEditText.text.toString()
+val lastName = lastNameEditText.text.toString()
+val number = numberEditText.text.toString()
+val email = emailEditText.text.toString()
+val selectedGenderId = radioGroup.checkedRadioButtonId
+val selectedGender =
+findViewById<RadioButton>(selectedGenderId).text.toString()
+val sharedPreferences = getSharedPreferences("UserDetails",
+Context.MODE_PRIVATE)
+val editor = sharedPreferences.edit()
+editor.putString("first_name", firstName)
+editor.putString("last_name", lastName)
+editor.putString("number", number)
+editor.putString("email", email)
+editor.putString("gender", selectedGender)
+editor.apply()
+val intent = Intent(this, DetailsActivity::class.java)
+startActivity(intent)
+}
+ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v,
+insets ->
+val systemBars =
+insets.getInsets(WindowInsetsCompat.Type.systemBars())
+v.setPadding(systemBars.left, systemBars.top, systemBars.right,
+systemBars.bottom)
+insets
+}
+}
+}
+activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/main"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+<EditText
+android:id="@+id/editTextText"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:ems="10"
+android:inputType="text"
+android:text="First Name"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.328"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintVertical_bias="0.113" />
+<EditText
+android:id="@+id/editTextText2"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:ems="10"
+android:inputType="text"
+android:text="Last Name"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.328"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintVertical_bias="0.236" />
+<EditText
+android:id="@+id/editTextText3"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:ems="10"
+android:inputType="text"
+android:text="Number"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.328"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintVertical_bias="0.346" />
+<EditText
+android:id="@+id/editTextText4"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:ems="10"
+android:inputType="text"
+android:text="Email"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.328"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintVertical_bias="0.451" />
+<RadioGroup
+android:id="@+id/radioGroup"
+android:layout_width="195dp"
+android:layout_height="105dp"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.375"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintVertical_bias="0.615">
+<RadioButton
+android:id="@+id/radioButton"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="Male" />
+<RadioButton
+android:id="@+id/radioButton2"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="Female" />
+</RadioGroup>
+<Button
+android:id="@+id/button"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Save"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.421"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintVertical_bias="0.784" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+DetailsActivity.kt
+package com.example.form
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Button
+import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+class DetailsActivity : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+enableEdgeToEdge()
+setContentView(R.layout.activity_details)
+val detailsText : TextView = findViewById(R.id.textView)
+val confirmButton : Button =findViewById((R.id.button2))
+val editButton : Button =findViewById(R.id.button3)
+val sharedPreferences = getSharedPreferences("UserDetails",
+Context.MODE_PRIVATE)
+val firstName = sharedPreferences.getString("first_name", "")
+val lastName = sharedPreferences.getString("last_name", "")
+val number = sharedPreferences.getString("number", "")
+val email = sharedPreferences.getString("email", "")
+val gender = sharedPreferences.getString("gender", "")
+detailsText.text = "Name: $firstName $lastName\nNumber: $number\nEmail:
+$email\nGender: $gender"
+editButton.setOnClickListener {
+finish()
+}
+confirmButton.setOnClickListener {
+val intent = Intent(this, ConfirmationActivity::class.java)
+startActivity(intent)
+}
+ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v,
+insets ->
+val systemBars =
+insets.getInsets(WindowInsetsCompat.Type.systemBars())
+v.setPadding(systemBars.left, systemBars.top, systemBars.right,
+systemBars.bottom)
+insets
+}
+}
+}
+activity_details.xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/main"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".DetailsActivity">
+<TextView
+android:id="@+id/textView"
+android:layout_width="145dp"
+android:layout_height="191dp"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.443"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintVertical_bias="0.131" />
+<Button
+android:id="@+id/button2"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Confirm"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.456"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintVertical_bias="0.477" />
+<Button
+android:id="@+id/button3"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Edit"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.456"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintVertical_bias="0.653" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+ConfirmationActivity.kt
+package com.example.form
+import android.content.Context
+import android.os.Bundle
+import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+class ConfirmationActivity : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+enableEdgeToEdge()
+setContentView(R.layout.activity_confirmation)
+val confirmationText: TextView = findViewById(R.id.textView2)
+val sharedPreferences = getSharedPreferences("UserDetails",
+Context.MODE_PRIVATE)
+val firstName = sharedPreferences.getString("first_name", "")
+confirmationText.text = "Hi $firstName, You are successfully registered"
+ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v,
+insets ->
+val systemBars =
+insets.getInsets(WindowInsetsCompat.Type.systemBars())
+v.setPadding(systemBars.left, systemBars.top, systemBars.right,
+systemBars.bottom)
+insets
+}
+}
+}
+Activity_confirmation.xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/main"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".ConfirmationActivity">
+<TextView
+android:id="@+id/textView2"
+android:layout_width="189dp"
+android:layout_height="256dp"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.373"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintVertical_bias="0.172" />
+</androidx.constraintlayout.widget.ConstraintLayout>
